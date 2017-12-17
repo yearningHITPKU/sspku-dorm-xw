@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            class="com.xw.sspku_dormselect.fragment.SelfPageFragment"
+            android:id="@+id/fg_self"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <fragment
+            class="com.xw.sspku_dormselect.fragment.CheckInPageFragment"
+            android:id="@+id/fg_check_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff">
+        <LinearLayout
+            android:id="@+id/btn_f"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/img_icon_f"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_self"/>
+            <TextView
+                android:id="@+id/txt_title_f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#333333"
+                android:text="个人中心"/>
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#f0f0f0"/>
+        <LinearLayout
+            android:id="@+id/btn_s"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/img_icon_s"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_check_in"/>
+            <TextView
+                android:id="@+id/txt_title_s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="#333333"
+                android:text="办理入住"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
