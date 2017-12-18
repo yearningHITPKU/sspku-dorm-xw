@@ -1,4 +1,4 @@
-package com.xw.sspku_dormselect;
+package com.xw.sspku_dormselect.util;
 
 /**
  * Created by xw on 2017/12/1.

@@ -1,5 +1,6 @@
 package com.xw.sspku_dormselect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,6 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.xw.sspku_dormselect.bean.ResponseBean;
+import com.xw.sspku_dormselect.bean.Student;
+import com.xw.sspku_dormselect.util.NetUtil;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,9 +33,9 @@ import java.net.URL;
 
 public class Login extends ActionBarActivity implements View.OnClickListener {
 
-    private static final int LOGIN_CHECK_SUCCESS_SELECTED = 1;
-    private static final int LOGIN_CHECK_SUCCESS_UNSELECTED = 2;
-    private static final int LOGIN_CHECK_FAILED = 0;
+    private static final int INFO_QUERY_SUCCESS = 1;
+    private static final int LOGIN_CHECK_FAILED = -1;
+    private static final int LOGIN_CHECK_SUCCESS = 0;
 
     private EditText username, password;
     private Button bt_username_clear;
@@ -132,7 +139,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
         // 在子线程中调用接口，获取用户名和密码
         new Thread(new Runnable() {
 
-            final String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            ResponseBean<Object> responseBean;
+
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username=" + username.getText().toString() + "&password=" + password.getText().toString();
 
             @Override
             public void run() {
@@ -154,6 +163,23 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                     }
                     String responseStr = response.toString();
                     Log.d("result", responseStr);
+
+                    // 解析json格式的字符串
+                    Gson gson = new Gson();
+                    responseBean = gson.fromJson(responseStr, new TypeToken<ResponseBean<Object>>(){}.getType());
+                    Log.d("responseBean", responseBean.toString());
+
+                    Message msg = new Message();
+
+                    if(responseBean.getErrcode() == 0){
+                        msg.what = LOGIN_CHECK_SUCCESS;
+
+                    }else{
+                        msg.what = LOGIN_CHECK_FAILED;
+                    }
+                    msg.obj = responseBean;
+                    mHandler.sendMessage(msg);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }finally {
@@ -162,12 +188,59 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
                 }
             }
         }).start();
-        Message msg = new Message();
-        msg.what = LOGIN_CHECK_FAILED;
-        msg.what = LOGIN_CHECK_SUCCESS_SELECTED;
-        msg.what = LOGIN_CHECK_SUCCESS_UNSELECTED;
-        //msg.obj = weathersList;
-        mHandler.sendMessage(msg);
+
+        return true;
+    }
+
+    private boolean isSelected(){
+
+        // 在子线程中调用接口，查询用户是否已经选择过宿舍
+        new Thread(new Runnable() {
+
+            ResponseBean<Student> responseBean;
+
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail?stuid=" + username.getText().toString();
+
+            @Override
+            public void run() {
+                HttpURLConnection con = null;
+                System.out.println(address);
+                try{
+                    URL url = new URL(address);
+                    con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+                    con.setConnectTimeout(8000);
+                    con.setReadTimeout(8000);
+                    InputStream in = con.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    StringBuilder response = new StringBuilder();
+                    String str;
+                    while((str=reader.readLine()) != null){
+                        response.append(str);
+                        Log.d("result",str);
+                    }
+                    String responseStr = response.toString();
+                    Log.d("result", responseStr);
+
+                    // 解析json格式的字符串
+                    Gson gson = new Gson();
+                    responseBean = gson.fromJson(responseStr, new TypeToken<ResponseBean<Student>>(){}.getType());
+                    Log.d("responseBean", responseBean.toString());
+
+                    Message msg = new Message();
+                    msg.what = INFO_QUERY_SUCCESS;
+                    msg.obj = responseStr;
+                    mHandler.sendMessage(msg);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    if(con != null)
+                        con.disconnect();
+                }
+            }
+        }).start();
+
         return true;
     }
 
@@ -175,16 +248,28 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                // 验证成功，且未分配宿舍，显示可以选择宿舍的主界面
-                case LOGIN_CHECK_SUCCESS_UNSELECTED:
-
+                // 获取用户信息成功，跳转到主界面
+                case INFO_QUERY_SUCCESS:
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    // 个人信息需要传递过去，并且通过宿舍号判断是否已经选择过宿舍
+                    intent.putExtra("responseJSON", msg.obj.toString());
+                    startActivity(intent);
                     break;
-                case LOGIN_CHECK_SUCCESS_SELECTED:
 
-                    break;
-                // 登录成功，且已经分配宿舍，显示已选选择的宿舍信息
+                // 登录失败
                 case LOGIN_CHECK_FAILED:
+                    if(((ResponseBean<Object>)(msg.obj)).getErrcode() == 40001){
+                        Toast.makeText(Login.this,"学号不存在",Toast.LENGTH_SHORT).show();
+                    }else if(((ResponseBean<Object>)(msg.obj)).getErrcode() == 40002){
+                        Toast.makeText(Login.this,"密码错误",Toast.LENGTH_SHORT).show();
+                    }else if(((ResponseBean<Object>)(msg.obj)).getErrcode() == 40009){
+                        Toast.makeText(Login.this,"参数错误",Toast.LENGTH_SHORT).show();
+                    }
+                    break;
 
+                // 登录成功
+                case LOGIN_CHECK_SUCCESS:
+                    isSelected();
                     break;
                 default:
                     break;
@@ -216,7 +301,6 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
                 break;
             case R.id.login:
-                // TODO 登录按钮
                 loginCheck();
 
                 break;

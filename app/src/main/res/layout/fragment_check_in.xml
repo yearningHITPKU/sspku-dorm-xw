@@ -123,6 +123,7 @@
                     android:textSize="16dp"
                     android:text="姓名"/>
                 <TextView
+                    android:id="@+id/checkin_stuName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -159,6 +160,7 @@
                     android:textSize="16dp"
                     android:text="学号"/>
                 <TextView
+                    android:id="@+id/checkin_stuid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -195,6 +197,7 @@
                     android:textSize="16dp"
                     android:text="校验码"/>
                 <TextView
+                    android:id="@+id/checkin_vcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -247,6 +250,7 @@
                         android:textSize="16dp"
                         android:text="学号1"/>
                     <EditText
+                        android:id="@+id/checkin_stuid_1"
                         android:layout_width="190dp"
                         android:layout_height="match_parent"
                         android:textColor="#333333"
@@ -285,6 +289,7 @@
                         android:textSize="16dp"
                         android:text="校验码1"/>
                     <EditText
+                        android:id="@+id/checkin_vcode_1"
                         android:layout_width="190dp"
                         android:layout_height="match_parent"
                         android:textColor="#333333"
@@ -319,6 +324,7 @@
                         android:textSize="16dp"
                         android:text="学号2"/>
                     <EditText
+                        android:id="@+id/checkin_stuid_2"
                         android:layout_width="190dp"
                         android:layout_height="match_parent"
                         android:textColor="#333333"
@@ -357,6 +363,7 @@
                         android:textSize="16dp"
                         android:text="校验码2"/>
                     <EditText
+                        android:id="@+id/checkin_vcode_2"
                         android:layout_width="190dp"
                         android:layout_height="match_parent"
                         android:textColor="#333333"
@@ -391,6 +398,7 @@
                         android:textSize="16dp"
                         android:text="学号3"/>
                     <EditText
+                        android:id="@+id/checkin_stuid_3"
                         android:layout_width="190dp"
                         android:layout_height="match_parent"
                         android:textColor="#333333"
@@ -429,6 +437,7 @@
                         android:textSize="16dp"
                         android:text="校验码3"/>
                     <EditText
+                        android:id="@+id/checkin_vcode_3"
                         android:layout_width="190dp"
                         android:layout_height="match_parent"
                         android:textColor="#333333"
@@ -450,6 +459,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    android:id="@+id/text_selectApart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -457,10 +467,10 @@
                     android:textSize="16dp"
                     android:text="选择楼号"/>
                 <Spinner
+                    android:id="@+id/spinner_apartID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="20dp"></Spinner>
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -489,17 +499,19 @@
                     android:textSize="16dp"
                     android:text="剩余床位数"/>
                 <TextView
+                    android:id="@+id/free_bed_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:textColor="#333333"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="30dp"
                     android:textSize="16dp"
-                    android:text="2"/>
+                    android:text="222"/>
             </RelativeLayout>
 
             <Button
+                android:id="@+id/checkin_button"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginLeft="20dp"
@@ -510,6 +522,7 @@
                 android:layout_marginBottom="80dp"
                 android:text="开始办理"/>
         </LinearLayout>
+
     </ScrollView>
 
 

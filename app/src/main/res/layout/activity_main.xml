@@ -16,6 +16,12 @@
             android:layout_height="match_parent"/>
 
         <fragment
+            class="com.xw.sspku_dormselect.fragment.SelectedFragment"
+            android:id="@+id/fg_selfSelected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <fragment
             class="com.xw.sspku_dormselect.fragment.CheckInPageFragment"
             android:id="@+id/fg_check_in"
             android:layout_width="match_parent"
@@ -46,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
                 android:textColor="#333333"
-                android:text="个人中心"/>
+                android:text="个人信息"/>
         </LinearLayout>
         <View
             android:layout_width="1dp"

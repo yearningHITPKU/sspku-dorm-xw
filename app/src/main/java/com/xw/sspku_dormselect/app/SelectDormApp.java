@@ -1,4 +1,4 @@
-package com.xw.sspku_dormselect;
+package com.xw.sspku_dormselect.app;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

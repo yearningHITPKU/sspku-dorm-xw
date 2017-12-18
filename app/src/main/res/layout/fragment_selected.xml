@@ -14,14 +14,14 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/userlogout_layout"
+                android:id="@+id/userlogout_layout_2"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="#1296db"
                 android:gravity="center" >
 
                 <ImageView
-                    android:id="@+id/img_self_logout"
+                    android:id="@+id/img_Selected_logout"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_gravity="left|center_vertical"
@@ -55,7 +55,7 @@
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/tv_stuName"
+                    android:id="@+id/tv_stuName_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -94,7 +94,7 @@
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/tv_studentid"
+                    android:id="@+id/tv_studentid_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -133,7 +133,7 @@
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/tv_stuGender"
+                    android:id="@+id/tv_stuGender_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -166,8 +166,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:text="未分配"
-                    android:textColor="#FF3030"
+                    android:text="已完成办理"
+                    android:textColor="#333333"
                     android:textSize="16dp" />
             </RelativeLayout>
 
@@ -194,18 +194,57 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="校验码"
+                    android:text="楼号"
                     android:textColor="#999999"
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/tv_vcode"
+                    android:id="@+id/tv_apartmentID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:text="XXXXX"
+                    android:text="9公寓"
+                    android:textColor="#333333"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ffffff">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="#eeeeee" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="宿舍号"
+                    android:textColor="#999999"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_dormID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="242"
                     android:textColor="#333333"
                     android:textSize="16dp" />
             </RelativeLayout>
