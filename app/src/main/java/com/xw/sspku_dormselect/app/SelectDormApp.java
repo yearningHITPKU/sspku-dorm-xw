@@ -25,11 +25,15 @@ public class SelectDormApp extends Application{
     private String userName;
     private String password;
 
+    public int choosenType;
+
     @Override
     public void onCreate(){
         super.onCreate();
         Log.d( TAG, "SelectDormApp->OnCreate");
         myApplication = this;
+
+        choosenType = 0;
 
         handleSSLHandshake();
 

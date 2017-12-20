@@ -13,9 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.xw.sspku_dormselect.R;
+import com.xw.sspku_dormselect.app.SelectDormApp;
 
 /**
- * Created by momian on 2017/12/15.
+ * Created by xw on 2017/12/15.
  */
 
 public class CheckInPageFragment extends Fragment {
@@ -33,9 +34,7 @@ public class CheckInPageFragment extends Fragment {
 
     private int itemWidth;
 
-    public  CheckInPageFragment(){
-
-    }
+    public  CheckInPageFragment(){}
 
     @Nullable
     @Override
@@ -73,6 +72,7 @@ public class CheckInPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 changeType(0);
+                ((SelectDormApp)(getActivity().getApplication())).choosenType = 0;
             }
         });
 
@@ -80,6 +80,7 @@ public class CheckInPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 changeType(1);
+                ((SelectDormApp)(getActivity().getApplication())).choosenType = 1;
             }
         });
 
@@ -87,6 +88,7 @@ public class CheckInPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 changeType(2);
+                ((SelectDormApp)(getActivity().getApplication())).choosenType = 2;
             }
         });
 
@@ -94,6 +96,7 @@ public class CheckInPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 changeType(3);
+                ((SelectDormApp)(getActivity().getApplication())).choosenType = 3;
             }
         });
     }

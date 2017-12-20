@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.xw.sspku_dormselect.R;
 
 /**
- * Created by momian on 2017/12/15.
+ * Created by xw on 2017/12/15.
  */
 
 public class SelfPageFragment extends Fragment {
