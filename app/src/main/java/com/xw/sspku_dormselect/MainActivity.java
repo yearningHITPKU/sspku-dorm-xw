@@ -2,6 +2,7 @@ package com.xw.sspku_dormselect;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -9,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -111,6 +111,7 @@ public class MainActivity extends FragmentActivity {
         Gson gson = new Gson();
         responseBean = gson.fromJson(str, new TypeToken<ResponseBean<Student>>(){}.getType());
         mStudent = responseBean.getData();
+
         Log.d("mStudent", mStudent.toString());
 
         mDormitory = new Dormitory();
@@ -138,6 +139,11 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Login.class);
+                SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("stuid", null);
+                editor.putString("pwd", null);
+                editor.commit();
                 startActivity(i);
             }
         });
@@ -145,6 +151,12 @@ public class MainActivity extends FragmentActivity {
         ivSelfLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("stuid", null);
+                editor.putString("pwd", null);
+                editor.commit();
+
                 Intent i = new Intent(MainActivity.this, Login.class);
                 startActivity(i);
             }

@@ -22,8 +22,8 @@ public class SelectDormApp extends Application{
     private static final String TAG = "MyAPP";
     private static SelectDormApp myApplication;//单例入口
 
-    private String userName;
-    private String password;
+    public String userName;
+    public String password;
 
     public int choosenType;
 

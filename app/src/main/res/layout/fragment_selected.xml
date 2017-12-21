@@ -17,7 +17,7 @@
                 android:id="@+id/userlogout_layout_2"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="#1296db"
+                android:background="#8c0000"
                 android:gravity="center" >
 
                 <ImageView

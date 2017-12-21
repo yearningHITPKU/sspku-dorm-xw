@@ -9,13 +9,13 @@
         android:layout_height="35dp"
         android:orientation="horizontal"
         android:gravity="bottom"
-        android:background="#ffffff">
+        android:background="#8c0000">
         <TextView
             android:id="@+id/btn_cohabit_s"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:textSize="16dp"
             android:gravity="center"
             android:text="单人"/>
@@ -23,14 +23,14 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:background="#f0f0f0"/>
         <TextView
             android:id="@+id/btn_cohabit_d"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:textSize="16dp"
             android:gravity="center"
             android:text="双人"/>
@@ -38,14 +38,14 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:background="#f0f0f0"/>
         <TextView
             android:id="@+id/btn_cohabit_t"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:textSize="16dp"
             android:gravity="center"
             android:text="三人"/>
@@ -53,14 +53,14 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:background="#f0f0f0"/>
         <TextView
             android:id="@+id/btn_cohabit_f"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:textSize="16dp"
             android:gravity="center"
             android:text="四人"/>
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:gravity="bottom"
-        android:background="#ffffff">
+        android:background="#8c0000">
         <ImageView
             android:id="@+id/iv_selected"
             android:layout_width="20dp"
@@ -514,13 +514,13 @@
                 android:id="@+id/checkin_button"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginBottom="80dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
-                android:background="#1296db"
-                android:textColor="#ffffff"
-                android:layout_marginBottom="80dp"
-                android:text="开始办理"/>
+                android:background="#8c0000"
+                android:text="开始办理"
+                android:textColor="#ffffff" />
         </LinearLayout>
 
     </ScrollView>

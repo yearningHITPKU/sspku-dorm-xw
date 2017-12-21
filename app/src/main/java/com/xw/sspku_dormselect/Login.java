@@ -1,6 +1,7 @@
 package com.xw.sspku_dormselect;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xw.sspku_dormselect.app.SelectDormApp;
 import com.xw.sspku_dormselect.bean.ResponseBean;
 import com.xw.sspku_dormselect.bean.Student;
 import com.xw.sspku_dormselect.util.NetUtil;
@@ -44,6 +46,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     private Button login;
     private boolean isOpen = false;
 
+    private String mStuid;
+    private String mPwd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +56,21 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
         // 测试网络是否联通
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
-            Log.d("myWeather", "网络OK");
+            Log.d(String.valueOf(R.string.app_name), "网络OK");
             Toast.makeText(Login.this,"网络OK！", Toast.LENGTH_LONG).show();
         }else {
-            Log.d("myWeather", "网络挂了");
+            Log.d(String.valueOf(R.string.app_name), "网络挂了");
             Toast.makeText(Login.this,"网络挂了！", Toast.LENGTH_LONG).show();
         }
 
+        SharedPreferences sharedPreferences = getSharedPreferences("xw", MODE_PRIVATE);
+        mStuid = sharedPreferences.getString("stuid", null);
+        mPwd = sharedPreferences.getString("pwd", null);
+        if( mStuid != null && mPwd != null){
+            if( !mStuid.isEmpty() && !mPwd.isEmpty() ){
+                loginCheckFirst();
+            }
+        }
         initView();
     }
 
@@ -134,6 +147,64 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
     }
 
+    private boolean loginCheckFirst(){
+
+        // 在子线程中调用接口，获取用户名和密码
+        new Thread(new Runnable() {
+
+            ResponseBean<Object> responseBean;
+
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username="+ mStuid + "&password=" + mPwd;
+
+            @Override
+            public void run() {
+                HttpURLConnection con = null;
+                System.out.println(address);
+                try{
+                    URL url = new URL(address);
+                    con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+                    con.setConnectTimeout(8000);
+                    con.setReadTimeout(8000);
+                    InputStream in = con.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    StringBuilder response = new StringBuilder();
+                    String str;
+                    while((str=reader.readLine()) != null){
+                        response.append(str);
+                        Log.d("result",str);
+                    }
+                    String responseStr = response.toString();
+                    Log.d("result", responseStr);
+
+                    // 解析json格式的字符串
+                    Gson gson = new Gson();
+                    responseBean = gson.fromJson(responseStr, new TypeToken<ResponseBean<Object>>(){}.getType());
+                    Log.d("responseBean", responseBean.toString());
+
+                    Message msg = new Message();
+
+                    if(responseBean.getErrcode() == 0){
+                        msg.what = LOGIN_CHECK_SUCCESS;
+
+                    }else{
+                        msg.what = LOGIN_CHECK_FAILED;
+                    }
+                    msg.obj = responseBean;
+                    mHandler.sendMessage(msg);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    if(con != null)
+                        con.disconnect();
+                }
+            }
+        }).start();
+
+        return true;
+    }
+
     private boolean loginCheck(){
 
         // 在子线程中调用接口，获取用户名和密码
@@ -141,7 +212,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
             ResponseBean<Object> responseBean;
 
-            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username="+ username.getText().toString() + "&password=" + password.getText().toString();
 
             @Override
             public void run() {
@@ -199,11 +270,13 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
             ResponseBean<Student> responseBean;
 
-            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail?stuid=" + username.getText().toString();
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail?stuid=" + (mStuid == null || mStuid.isEmpty() ? username.getText().toString() : mStuid) ;
 
             @Override
             public void run() {
                 HttpURLConnection con = null;
+                //System.out.println(mStuid + "111111111111111111");
+                //System.out.println(username.getText().toString() + "22222222222222222222");
                 System.out.println(address);
                 try{
                     URL url = new URL(address);
@@ -250,10 +323,45 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
             switch (msg.what) {
                 // 获取用户信息成功，跳转到主界面
                 case INFO_QUERY_SUCCESS:
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    // 个人信息需要传递过去，并且通过宿舍号判断是否已经选择过宿舍
-                    intent.putExtra("responseJSON", msg.obj.toString());
-                    startActivity(intent);
+
+                    // 解析json格式的字符串
+                    ResponseBean<Student> responseBean;
+                    Gson gson = new Gson();
+                    responseBean = gson.fromJson(msg.obj.toString(), new TypeToken<ResponseBean<Student>>(){}.getType());
+
+                    if(responseBean.getErrcode() == 40001){
+                        Toast.makeText(Login.this,"学号不存在",Toast.LENGTH_SHORT).show();
+                        SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("stuid", null);
+                        editor.putString("pwd", null);
+                        editor.commit();
+                        mStuid = null;
+                        mPwd = null;
+                    }else if(responseBean.getErrcode() == 40002){
+                        Toast.makeText(Login.this,"密码错误",Toast.LENGTH_SHORT).show();
+                        SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("stuid", null);
+                        editor.putString("pwd", null);
+                        editor.commit();
+                        mStuid = null;
+                        mPwd = null;
+                    }else if(responseBean.getErrcode() == 40009){
+                        Toast.makeText(Login.this,"参数错误",Toast.LENGTH_SHORT).show();
+                        SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("stuid", null);
+                        editor.putString("pwd", null);
+                        editor.commit();
+                        mStuid = null;
+                        mPwd = null;
+                    }else{
+                        Intent intent = new Intent(Login.this, MainActivity.class);
+                        // 个人信息需要传递过去，并且通过宿舍号判断是否已经选择过宿舍
+                        intent.putExtra("responseJSON", msg.obj.toString());
+                        startActivity(intent);
+                    }
                     break;
 
                 // 登录失败
@@ -269,6 +377,11 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
                 // 登录成功
                 case LOGIN_CHECK_SUCCESS:
+                    SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("stuid", username.getText().toString());
+                    editor.putString("pwd", password.getText().toString());
+                    editor.commit();
                     isSelected();
                     break;
                 default:
