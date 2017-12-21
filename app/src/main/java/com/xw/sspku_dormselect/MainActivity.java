@@ -141,8 +141,9 @@ public class MainActivity extends FragmentActivity {
                 Intent i = new Intent(MainActivity.this, Login.class);
                 SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("stuid", null);
-                editor.putString("pwd", null);
+                //editor.putString("stuid", null);
+                //editor.putString("pwd", null);
+                editor.remove("pwd");
                 editor.commit();
                 startActivity(i);
             }
@@ -153,8 +154,9 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("stuid", null);
-                editor.putString("pwd", null);
+                //editor.putString("stuid", null);
+                //editor.putString("pwd", null);
+                editor.remove("pwd");
                 editor.commit();
 
                 Intent i = new Intent(MainActivity.this, Login.class);

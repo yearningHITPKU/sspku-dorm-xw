@@ -23,6 +23,14 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="166dp"
+        android:layout_height="166dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/pku"
+        />
+
     <RelativeLayout
         android:id="@+id/login_layout"
         android:layout_width="fill_parent"
@@ -35,20 +43,31 @@
             android:id="@+id/username_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="0dp"
             android:gravity="center" >
 
             <!-- android:inputType="number" -->
 
-            <EditText
+            <AutoCompleteTextView
+                android:id="@+id/actv_username"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:hint="@string/username"
+                android:maxLength="20"
+                android:paddingLeft="55dp"
+                android:paddingRight="60dp" />
+
+<!--            <EditText
                 android:id="@+id/username"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="5dp"
+                android:hint="@string/username"
                 android:maxLength="20"
                 android:paddingLeft="55dp"
                 android:paddingRight="60dp" >
-            </EditText>
+            </EditText>-->
 
             <ImageView
                 android:layout_width="18dp"
@@ -94,6 +113,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:inputType="textPassword"
+                android:hint="@string/password"
                 android:maxLength="20"
                 android:paddingLeft="55dp"
                 android:paddingRight="60dp" >

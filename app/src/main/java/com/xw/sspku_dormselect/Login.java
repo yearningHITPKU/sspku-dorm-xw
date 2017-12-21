@@ -12,6 +12,8 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -39,7 +41,9 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     private static final int LOGIN_CHECK_FAILED = -1;
     private static final int LOGIN_CHECK_SUCCESS = 0;
 
-    private EditText username, password;
+    private AutoCompleteTextView actv_userNames;
+    //private EditText username;
+    private EditText password;
     private Button bt_username_clear;
     private Button bt_pwd_clear;
     private Button bt_pwd_eye;
@@ -76,6 +80,49 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
     private void initView() {
 
+        // 获得记录用户名控件
+        actv_userNames = (AutoCompleteTextView)findViewById(R.id.actv_username);
+        actv_userNames.setThreshold(1);
+        actv_userNames.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                SharedPreferences sp = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                String[] allUserName = new String[sp.getAll().size()];
+                allUserName = sp.getAll().values().toArray(new String[0]);
+                // sp.getAll()返回一张hash map
+                // sp.getAll().size()返回的是有多少个键值对
+                // keySet()得到的是a set of the keys.
+                // hash map是由key-value组成的
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                        Login.this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        allUserName);
+
+                actv_userNames.setAdapter(adapter);// 设置数据适配器
+
+                // 获得文本框中的用户
+                String user = actv_userNames.getText().toString().trim();
+                if ("".equals(user)) {
+                    // 用户名为空,设置按钮不可见
+                    bt_username_clear.setVisibility(View.INVISIBLE);
+                } else {
+                    // 用户名不为空，设置按钮可见
+                    bt_username_clear.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+/*
         username = (EditText) findViewById(R.id.username);
         // 监听文本框内容变化
         username.addTextChangedListener(new TextWatcher() {
@@ -103,7 +150,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
         password = (EditText) findViewById(R.id.password);
         // 监听文本框内容变化
         password.addTextChangedListener(new TextWatcher() {
@@ -212,7 +259,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
             ResponseBean<Object> responseBean;
 
-            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username="+ username.getText().toString() + "&password=" + password.getText().toString();
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/Login?username="+ actv_userNames.getText().toString() + "&password=" + password.getText().toString();
 
             @Override
             public void run() {
@@ -270,13 +317,11 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
             ResponseBean<Student> responseBean;
 
-            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail?stuid=" + (mStuid == null || mStuid.isEmpty() ? username.getText().toString() : mStuid) ;
+            String address = "https://api.mysspku.com/index.php/V1/MobileCourse/getDetail?stuid=" + (mStuid == null || mStuid.isEmpty() ? actv_userNames.getText().toString() : mStuid) ;
 
             @Override
             public void run() {
                 HttpURLConnection con = null;
-                //System.out.println(mStuid + "111111111111111111");
-                //System.out.println(username.getText().toString() + "22222222222222222222");
                 System.out.println(address);
                 try{
                     URL url = new URL(address);
@@ -377,11 +422,18 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
                 // 登录成功
                 case LOGIN_CHECK_SUCCESS:
-                    SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("stuid", username.getText().toString());
-                    editor.putString("pwd", password.getText().toString());
-                    editor.commit();
+
+                    // 如果两个编辑框有一个为空则说明是在进行自动登录，则什么也不需要修改
+                    if(!actv_userNames.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
+                        SharedPreferences settings = (SharedPreferences)getSharedPreferences("xw", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("stuid", actv_userNames.getText().toString());
+                        editor.putString("pwd", password.getText().toString());
+                        editor.commit();
+                        mStuid = settings.getString("stuid", null);
+                        mPwd = settings.getString("pwd", null);
+                    }
+                    // 查询个人信息
                     isSelected();
                     break;
                 default:
@@ -395,7 +447,8 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.bt_username_clear:
                 // 清除登录名
-                username.setText("");
+                //username.setText("");
+                actv_userNames.setText("");
                 break;
             case R.id.bt_pwd_clear:
                 // 清除密码
