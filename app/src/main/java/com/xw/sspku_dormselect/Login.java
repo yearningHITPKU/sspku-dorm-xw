@@ -61,10 +61,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
         // 测试网络是否联通
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d(String.valueOf(R.string.app_name), "网络OK");
-            Toast.makeText(Login.this,"网络OK！", Toast.LENGTH_LONG).show();
+            //Toast.makeText(Login.this,"网络OK！", Toast.LENGTH_LONG).show();
         }else {
             Log.d(String.valueOf(R.string.app_name), "网络挂了");
-            Toast.makeText(Login.this,"网络挂了！", Toast.LENGTH_LONG).show();
+            //Toast.makeText(Login.this,"网络挂了！", Toast.LENGTH_LONG).show();
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences("xw", MODE_PRIVATE);

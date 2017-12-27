@@ -205,6 +205,34 @@ public class MainActivity extends FragmentActivity {
         btnCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                switch (((SelectDormApp)getApplication()).choosenType){
+                    case 0:
+                        break;
+                    case 1:
+                        if(editCheckinStuid_1.getText().toString().isEmpty() || editCheckinVcode_1.getText().toString().isEmpty()){
+                            Toast.makeText(MainActivity.this,"学号或校验码不能为空",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        break;
+                    case 2:
+                        if(editCheckinStuid_1.getText().toString().isEmpty() || editCheckinVcode_1.getText().toString().isEmpty() ||
+                                editCheckinStuid_2.getText().toString().isEmpty() || editCheckinVcode_2.getText().toString().isEmpty()){
+                            Toast.makeText(MainActivity.this,"学号或校验码不能为空",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        break;
+                    case 3:
+                        if(editCheckinStuid_1.getText().toString().isEmpty() || editCheckinVcode_1.getText().toString().isEmpty() ||
+                                editCheckinStuid_2.getText().toString().isEmpty() || editCheckinVcode_2.getText().toString().isEmpty() ||
+                                editCheckinStuid_3.getText().toString().isEmpty() || editCheckinVcode_3.getText().toString().isEmpty()){
+                            Toast.makeText(MainActivity.this,"学号或校验码不能为空",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        break;
+                    default:
+                        break;
+                }
                 selectRoom();
             }
         });
@@ -218,6 +246,7 @@ public class MainActivity extends FragmentActivity {
         tvCheckinStuid.setText(mStudent.getStudentid());
         tvCheckinVcode.setText(mStudent.getVcode());
 
+        // 获取fragment布局
         selfFragment = getSupportFragmentManager().findFragmentById(R.id.fg_self);
         selfSelectedFragment = getSupportFragmentManager().findFragmentById(R.id.fg_selfSelected);
         checkInFragment = getSupportFragmentManager().findFragmentById(R.id.fg_check_in);
@@ -329,7 +358,6 @@ public class MainActivity extends FragmentActivity {
 
     private boolean selectRoom(){
 
-        // 在子线程中调用接口，查询用户是否已经选择过宿舍
         new Thread(new Runnable() {
 
             ResponseBean<Object> responseBean;

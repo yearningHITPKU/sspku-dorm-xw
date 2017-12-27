@@ -26,7 +26,7 @@
                     android:layout_height="21dp"
                     android:layout_gravity="left|center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/logout"
+                    android:background="@drawable/logout_white"
                     android:visibility="visible" />
 
                 <TextView
@@ -209,15 +209,17 @@
                     android:textColor="#333333"
                     android:textSize="16dp" />
             </RelativeLayout>
-
+            <!--android:layout_width="match_parent"
+                            android:layout_height="170dp"-->
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="200dp"
                 android:layout_marginBottom="80dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:scaleType="fitXY"
+                android:layout_gravity="center"
                 android:src="@drawable/sspkumap" />
 
         </LinearLayout>
